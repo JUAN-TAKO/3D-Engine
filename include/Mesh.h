@@ -1,25 +1,33 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include "Shader.h"
+#include "AbstractMesh.h"
 
-class GObjectModel;
-class Mesh{
+class Mesh : public AbstractMesh{
+private:
+    size_t nb_vertices;
+    GLfloat* data;
+    int stride;
+    int norm_off;
+    int tex_off;
+    size_t nb_indices;
+    GLuint* indices;
 
+    void loadData(float* src, int components, int str, int offset){
+        for(size_t i=0; i < nb_vertices*components; i+=stride){
+            for(int j=0; j < components; j++){
+                data[offset+i+j] = src[i*str+j];
+            }
+        }
+    }
 public:
+    Mesh(size_t nb_vert, float* pdata, float* ndata, float* tdata, size_t in_stride, size_t nb_idx, uint32_t* idx);
+    ~Mesh();
+    void setAttributes(const Shader* shader) const;
+    void initVertexBuffer(GObjectModel* model);
+    void initIndexBuffer(GObjectModel* model);
+    size_t getVertexSize() const;
 
-
-    virtual GLfloat* const getVertices() const = 0;
-    virtual GLuint* const getIndices() const = 0;
-    virtual GLfloat* const getColors() const = 0;
-    virtual GLfloat* const getNormals() const = 0;
-    virtual size_t const getVertexSize() const = 0;
-    virtual size_t const getIndexSize() const = 0;
-    virtual size_t const getTriangleNumber() const = 0;
-    virtual void setAttributes(const Shader* shader) const = 0;
-    virtual void initBuffers(GObjectModel* model) = 0;
 };
 
 #endif

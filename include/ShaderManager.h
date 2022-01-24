@@ -47,11 +47,13 @@ private:
     };
     std::set<Shader, ShaderCmp> shaders;
 
+
+    void addSubShader(const std::string& file);
+
 public:
     ShaderManager(const std::string& dir);
     ~ShaderManager();
     void addDir(const std::string& dir);
-    void addSubShader(const std::string& file);
     GLint getSubShader(const std::string& name);
 
     const Shader& getShader(const std::vector<std::string>& names);

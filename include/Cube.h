@@ -1,11 +1,11 @@
 #ifndef CUBE_H
 #define CUBE_H
 
-#include "Mesh.h"
+#include "AbstractMesh.h"
 #include "GraphicContext.h"
 #include "GObjectModel.h"
 
-class Cube : public Mesh{
+class Cube : public AbstractMesh{
 private:
     static const GLfloat vertices[];
     static const GLuint indices[];
@@ -17,12 +17,15 @@ public:
     GLuint* const getIndices() const;
     GLfloat* const getColors() const;
     GLfloat* const getNormals() const;
-    const size_t getVertexSize() const;
-    const size_t getIndexSize() const;
-    const size_t getTriangleNumber() const;
+    size_t getVertexSize() const;
+    size_t getIndexSize() const;
+    size_t getTriangleNumber() const;
+    ~Cube(){}
 
     void setAttributes(const Shader* shader) const;
-    void initBuffers(GObjectModel* model);
+    void initVertexBuffer(GObjectModel* model);
+    void initIndexBuffer(GObjectModel* model);
+
 
 };
 

@@ -3,7 +3,7 @@
 
 int GObjectModel::gid = 0;
 
-GObjectModel::GObjectModel(GraphicContext& cont, const Shader* sh, Mesh* m)
+GObjectModel::GObjectModel(GraphicContext& cont, const Shader* sh, AbstractMesh* m)
 : context(cont), shader(sh){
     mesh = m;
     id = gid++;
@@ -16,14 +16,16 @@ void GObjectModel::initBuffers(){
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     
-    mesh->initBuffers(this);
+    mesh->initVertexBuffer(this);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->getIndexSize(), mesh->getIndices(), GL_STATIC_DRAW);
+
+    mesh->initIndexBuffer(this);
+    
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 void GObjectModel::initVertexAttributes(){
@@ -46,6 +48,9 @@ void GObjectModel::createBuffer(int size){
 void GObjectModel::loadData(int offset, int size, const GLvoid* ptr){
     glBufferSubData(GL_ARRAY_BUFFER, offset, size, ptr);
 }
+void GObjectModel::loadIndices(int size, uint32_t* ptr){
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, ptr, GL_STATIC_DRAW);
+}
 
 GObjectModel::~GObjectModel(){
     glDeleteBuffers(1, & EBO);
@@ -65,7 +70,7 @@ GLuint GObjectModel::getEBO() const{
     return EBO;
 }
 
-Mesh* GObjectModel::getMesh() const{
+AbstractMesh* GObjectModel::getMesh() const{
     return mesh;
 }
 GraphicContext& GObjectModel::getContext(){

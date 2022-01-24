@@ -46,9 +46,14 @@ GLuint initShader(std::string& source, GLenum type){
 
 void ShaderManager::addSubShader(const std::string& file){
     std::string name = fs::path(file).stem();
-    std::string source = getFile(file);
+
+    if(subShaders.find(name) != subShaders.end()){
+        std::cout << "duplicate shader name : " << name << " (ignoring duplicates)" << std::endl; 
+        return;
+    }
 
     std::cout << name << std::endl;
+    std::string source = getFile(file);
 
     GLenum type;
     switch (name[0])
@@ -79,7 +84,7 @@ void ShaderManager::addDir(const std::string& dir){
     for (const auto & entry : fs::directory_iterator(dir)){
         if(entry.is_directory())
             addDir(entry.path());
-        else
+        else if(entry.path().extension() == ".glsl")
             addSubShader(entry.path());
     }
 }

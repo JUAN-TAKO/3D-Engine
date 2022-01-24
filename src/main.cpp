@@ -11,13 +11,13 @@
 
 #include <Cube.h>
 #include <Object.h>
-#include <Mesh.h>
 #include <GraphicContext.h>
 #include <Camera.h>
 #include <GraphicObject.h>
 #include <GObjectModel.h>
 #include <Player.hpp>
 #include <ShaderManager.h>
+#include <MeshManager.h>
 
 void PrintOpenGLErrors(char const * const Function, char const * const File, int const Line)
 {
@@ -76,27 +76,28 @@ int main()
 {
 	GLFWwindow* window = initWindow();
 
-	ShaderManager manager = ShaderManager("shaders");
+	ShaderManager shaderManager = ShaderManager("shaders");
+	MeshManager meshManager = MeshManager("resources");
 
-	GraphicContext context = GraphicContext(&manager);
+	GraphicContext context = GraphicContext(&shaderManager);
 
 	Cube cubeMesh = Cube();
 
-	const Shader& cubeShader = manager.getShader(std::vector<std::string>({"V_first", "F_first"}));
+	const Shader& cubeShader = shaderManager.getShader(std::vector<std::string>({"V_smooth", "F_smooth"}));
 
-	GObjectModel cubeModel = GObjectModel(context, &cubeShader, &cubeMesh);
+	GObjectModel model = GObjectModel(context, &cubeShader, meshManager.getMesh("Mars 2K.Mars_Cube.002"));
 
 	Object scene = Object();
-	GraphicObject cube = GraphicObject(&cubeModel);
+	GraphicObject obj = GraphicObject(&model);
 	//GraphicObject light = GraphicObject(&cubeModel);
 
-	cube.addTo(&scene);
+	obj.addTo(&scene);
 	//light.addTo(&scene);
 
     glm::mat4 projection = glm::perspective(glm::radians(80.0f), 960.0f / 540.0f, 0.1f, 1000.0f);
 	Camera cam(context, projection);
 	cam.setTransform(glm::lookAt(
-        glm::vec3(0,0,-2), // Camera is at (0,0,-2), in World Space
+        glm::vec3(0,0,-4), // Camera is at (0,0,-2), in World Space
         glm::vec3(0,0,0), // and looks at the origin
         glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
     ));
@@ -133,8 +134,8 @@ int main()
 		
 		
 		context.render(cam);
-		glm::mat4 t = glm::rotate(cube.getTransform(), (float)glm::radians(0.5), glm::vec3(2.0f, 1.0f, 0));
-		cube.setTransform(t);
+		glm::mat4 t = glm::rotate(obj.getTransform(), (float)glm::radians(0.5), glm::vec3(2.0f, 1.0f, 0));
+		obj.setTransform(t);
 		glfwSwapBuffers(window);
 		
 

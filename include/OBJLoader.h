@@ -1,6 +1,9 @@
 // OBJ_Loader.h - A Single Header OBJ Model Loader
 
-#pragma once
+#ifndef OBJ_LOADER_H
+#define OBJ_LOADER_H
+
+#warning "--------------- OBJLoader ! -----------------"
 
 // Iostream - STD I/O Library
 #include <iostream>
@@ -18,7 +21,7 @@
 #include <math.h>
 
 // Print progress to console while loading (large models)
-#define OBJL_CONSOLE_OUTPUT
+//#define OBJL_CONSOLE_OUTPUT
 
 // Namespace: OBJL
 //
@@ -1165,3 +1168,5 @@ namespace objl
 		}
 	};
 }
+
+#endif

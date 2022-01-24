@@ -1,7 +1,7 @@
 bin/GraphicContext.o: src/GraphicContext.cpp include/GraphicContext.h \
  include/ShaderManager.h include/Shader.h include/Camera.h \
  include/Object.h include/GraphicContext.h include/GObjectModel.h \
- include/Mesh.h include/GraphicObject.h include/Object.h \
+ include/AbstractMesh.h include/GraphicObject.h include/Object.h \
  include/GObjectModel.h include/Camera.h
 
 include/GraphicContext.h:
@@ -18,7 +18,7 @@ include/GraphicContext.h:
 
 include/GObjectModel.h:
 
-include/Mesh.h:
+include/AbstractMesh.h:
 
 include/GraphicObject.h:
 

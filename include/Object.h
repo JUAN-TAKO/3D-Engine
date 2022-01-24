@@ -8,7 +8,7 @@
 #include "GraphicContext.h"
 
 class Camera;
-class Mesh;
+class AbstractMesh;
 
 class Object{
 protected:

@@ -3,7 +3,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 #include <iostream>
-#include "Mesh.h"
 #include "Object.h"
 #include "Camera.h"
 

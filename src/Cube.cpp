@@ -80,24 +80,29 @@ GLfloat* const Cube::getNormals() const{
     return (GLfloat*)normals;
 }
 
-const size_t Cube::getVertexSize() const{
+size_t Cube::getVertexSize() const{
     return sizeof(vertices);
 }
 
-const size_t Cube::getIndexSize() const{
+size_t Cube::getIndexSize() const{
     return sizeof(indices);
 }
 
-const size_t Cube::getTriangleNumber() const{
+size_t Cube::getTriangleNumber() const{
     return sizeof(indices)/(3*sizeof(GLuint));
 }
 
-void Cube::initBuffers(GObjectModel* model){
+void Cube::initVertexBuffer(GObjectModel* model){
     model->createBuffer(getVertexSize()*3);
     model->loadData(0, getVertexSize(), getVertices());
     model->loadData(getVertexSize(), getVertexSize(), getColors());
     model->loadData(getVertexSize()*2, getVertexSize(), getNormals());
 }
+
+void Cube::initIndexBuffer(GObjectModel* model){
+    model->loadIndices(getIndexSize(), getIndices());
+}
+
 void Cube::setAttributes(const Shader* shader) const{
     shader->setAttr("position", 3, GL_FLOAT, false, 0, 0);
     shader->setAttr("color", 3, GL_FLOAT, false, 0, (const GLvoid*)getVertexSize());
